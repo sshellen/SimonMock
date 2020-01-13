@@ -13,7 +13,7 @@
     margin: 5px;
     box-sizing: border-box;
 }
-.button1, .button2, .button3, .button4{
+.button1 svg, .button2 svg, .button3 svg, .button4 svg{
     padding: 10px;
     width: 120px;
     height: 120px;
@@ -60,45 +60,45 @@
     stroke: #999;
     stroke-width: 2px;
 }
-.button1 .simonButton{
+.button1 svg .simonButton{
     fill: #0000fe;
 }
 
-.button2{
+.button2 svg{
  transform: rotate(90deg);
 }
-.button2 .simonButton{
+.button2 svg .simonButton{
     fill:#cc0000;
 }
 
-.button3{
+.button3 svg{
     transform: rotate(180deg);
 
 }
-.button3 .simonButton{
+.button3 svg .simonButton{
     fill: #008800;
 }
-.button4{
+.button4 svg{
     transform: rotate(270deg);
 
 }
-.button4 .simonButton{
+.button4 svg .simonButton{
     fill: #f9cd0b;
 }
 
-.button1:active .simonButton, .button1.active .simonButton{
+.button1:active svg .simonButton, .button1.active svg .simonButton{
     fill: #33acfe;
 }
 
-.button2:active .simonButton, .button2.active .simonButton {
+.button2:active svg .simonButton, .button2.active svg .simonButton {
     fill: #ff3300;
 }
 
-.button3:active .simonButton, .button3.active .simonButton{
+.button3:active svg .simonButton, .button3.active svg .simonButton{
     fill: #00ee00;
 }
 
-.button4:active .simonButton, .button4.active .simonButton{
+.button4:active svg .simonButton, .button4.active svg .simonButton{
     fill: #ffff00;
 }
 .message{
