@@ -22,14 +22,15 @@ class Simon extends React.Component {
     }
     this.buttons;
     this.errorButton;
-    this.button1Sound = '/SimonMock/mp3/simonSound1.mp3';
-    this.button2Sound = '/SimonMock/mp3/simonSound2.mp3';
-    this.button3Sound = '/SimonMock/mp3/simonSound3.mp3';
-    this.button4Sound = '/SimonMock/mp3/simonSound4.mp3';
-    this.errorSound = '/SimonMock/mp3/error.mp3';
+    this.sounds = {
+      button1Sound: new Audio('/SimonMock/mp3/simonSound1.mp3'),
+      button2Sound: new Audio('/SimonMock/mp3/simonSound1.mp3'),
+      button3Sound: new Audio('/SimonMock/mp3/simonSound1.mp3'),
+      button4Sound: new Audio('/SimonMock/mp3/simonSound1.mp3'),
+      errorSound: new Audio('/SimonMock/mp3/error.mp3')
+    }
     this.guessCount = 0;
   }
-
 
   assignNewStep = () => {
     let buttonToAdd = Math.round(Math.random() * 10/3) + 1
@@ -39,7 +40,6 @@ class Simon extends React.Component {
 
   }
 
-
   highlightButton = (count) => {
     let self = this;
     return new Promise((resolve, reject) =>{
@@ -47,8 +47,8 @@ class Simon extends React.Component {
         try {
           if (typeof self.state.order[count] !== 'undefined') {
             let el = document.getElementById(`button${self.state.order[count]}`)
-            let sound = document.getElementById(`button${self.state.order[count]}Sound`)
-            sound.play()
+            let sound = this.sounds[`button${self.state.order[count]}Sound`];
+            sound.play();
             el.classList.add('active')
           }
           resolve(count += 1);
@@ -60,7 +60,6 @@ class Simon extends React.Component {
 
   }
 
-
   unHighlightButtons = () => {
     let self = this;
     return new Promise((resolve, reject) => {
@@ -70,16 +69,14 @@ class Simon extends React.Component {
           }},500)
       resolve(true)
     })
-
   }
-
 
   handleClick = (e,val) => {
     e.preventDefault();
-    let sound = document.getElementById(`button${val}Sound`)
-    sound.play()
+    let sound = this.sounds[`button${val}Sound`];
+    sound.play();
     if(+this.state.order[this.guessCount] !== +val) {
-        document.getElementById("errorSound").play();
+        this.errorSound.play();
         this.errorButton.classList.add("error");
         this.guessCount = 0
         this.setState({
@@ -126,7 +123,7 @@ class Simon extends React.Component {
   }
 
   componentDidMount() {
-    this.buttons = document.getElementsByTagName('svg')
+    this.buttons = document.getElementsByTagName('a')
     this.errorButton = document.getElementsByClassName('center')[0]
 
     this.setState({
@@ -145,7 +142,6 @@ class Simon extends React.Component {
       if(e.target.id !== "moreLink") {
         this.setState({showPopup:false})
       }
-
     })
 
   }
@@ -156,32 +152,35 @@ class Simon extends React.Component {
       <div className="app">
       <h3 className="title"><div>Match the played sequence</div><a className="more" id="moreLink" onClick={e => this.showPopup(e)}>MORE</a></h3>
       <div className="background">
-        <audio id="button1Sound" src={this.button1Sound} autoPlay={false}></audio>
-        <audio id="button2Sound" src={this.button2Sound} autoPlay={false}></audio>
-        <audio id="button3Sound" src={this.button3Sound} autoPlay={false}></audio>
-        <audio id="button4Sound" src={this.button4Sound} autoPlay={false}></audio>
-        <audio id="errorSound" src={this.errorSound} autoPlay={false}></audio>
         <div className="simon">
           <div className="top">
-            <svg id="button1"  className="button1"   onClick={(e) => this.handleClick(e,'1')} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 144.34 147.6">
+            <a id="button1"  className="button1"   onClick={(e) => this.handleClick(e,'1')}>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 144.34 147.6">
               <path className="simonButton" d="M49.07,44.32s29.41-30.67,72-41.62c0,0,13.61-4.58,22.32,4.79,0,0,3,2.31,3,10.06L146.11,72s1.14,8.89-14.27,15.38c0,0-32.91,7.85-43.46,46,0,0-4,14.23-24,14.88H16.21s-14.6.41-13-13.38C3.23,134.8,8.91,84.49,49.07,44.32Z" transform="translate(-2.6 -1.08)"/>
             </svg>
-            <svg id="button2"  className="button2" onClick={(e) => this.handleClick(e,'2')} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 144.34 147.6">
-              <path className="simonButton" d="M49.07,44.32s29.41-30.67,72-41.62c0,0,13.61-4.58,22.32,4.79,0,0,3,2.31,3,10.06L146.11,72s1.14,8.89-14.27,15.38c0,0-32.91,7.85-43.46,46,0,0-4,14.23-24,14.88H16.21s-14.6.41-13-13.38C3.23,134.8,8.91,84.49,49.07,44.32Z" transform="translate(-2.6 -1.08)"/>
-            </svg>
+            </a>
+             <a id="button2"  className="button2" onClick={(e) => this.handleClick(e,'2')}>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 144.34 147.6">
+                <path className="simonButton" d="M49.07,44.32s29.41-30.67,72-41.62c0,0,13.61-4.58,22.32,4.79,0,0,3,2.31,3,10.06L146.11,72s1.14,8.89-14.27,15.38c0,0-32.91,7.85-43.46,46,0,0-4,14.23-24,14.88H16.21s-14.6.41-13-13.38C3.23,134.8,8.91,84.49,49.07,44.32Z" transform="translate(-2.6 -1.08)"/>
+              </svg>
+            </a>
           </div>
+
           <div className="center">
               <div className="startNew"  onClick={e => this.startGame(e)} />
               <img src="/SimonMock/png/newGameButton.png" />
           </div>
           <div className="bottom">
-            <svg id="button4"  className="button4"  onClick={(e) => this.handleClick(e,'4')} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 144.34 147.6">
-              <path className="simonButton" d="M49.07,44.32s29.41-30.67,72-41.62c0,0,13.61-4.58,22.32,4.79,0,0,3,2.31,3,10.06L146.11,72s1.14,8.89-14.27,15.38c0,0-32.91,7.85-43.46,46,0,0-4,14.23-24,14.88H16.21s-14.6.41-13-13.38C3.23,134.8,8.91,84.49,49.07,44.32Z" transform="translate(-2.6 -1.08)"/>
-            </svg>
-
-            <svg id="button3"  className="button3" onClick={(e) => this.handleClick(e,'3')} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 144.34 147.6">
-              <path className="simonButton" d="M49.07,44.32s29.41-30.67,72-41.62c0,0,13.61-4.58,22.32,4.79,0,0,3,2.31,3,10.06L146.11,72s1.14,8.89-14.27,15.38c0,0-32.91,7.85-43.46,46,0,0-4,14.23-24,14.88H16.21s-14.6.41-13-13.38C3.23,134.8,8.91,84.49,49.07,44.32Z" transform="translate(-2.6 -1.08)"/>
-            </svg>
+            <a id="button4"  className="button4"  onClick={(e) => this.handleClick(e,'4')}>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 144.34 147.6">
+                <path className="simonButton" d="M49.07,44.32s29.41-30.67,72-41.62c0,0,13.61-4.58,22.32,4.79,0,0,3,2.31,3,10.06L146.11,72s1.14,8.89-14.27,15.38c0,0-32.91,7.85-43.46,46,0,0-4,14.23-24,14.88H16.21s-14.6.41-13-13.38C3.23,134.8,8.91,84.49,49.07,44.32Z" transform="translate(-2.6 -1.08)"/>
+              </svg>
+            </a>
+            <a id="button3"  className="button3" onClick={(e) => this.handleClick(e,'3')}>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 144.34 147.6">
+                <path className="simonButton" d="M49.07,44.32s29.41-30.67,72-41.62c0,0,13.61-4.58,22.32,4.79,0,0,3,2.31,3,10.06L146.11,72s1.14,8.89-14.27,15.38c0,0-32.91,7.85-43.46,46,0,0-4,14.23-24,14.88H16.21s-14.6.41-13-13.38C3.23,134.8,8.91,84.49,49.07,44.32Z" transform="translate(-2.6 -1.08)"/>
+              </svg>
+            </a>
           </div>
         </div>
       </div>
