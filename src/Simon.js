@@ -24,9 +24,9 @@ class Simon extends React.Component {
     this.errorButton;
     this.sounds = {
       button1Sound: new Audio('/SimonMock/mp3/simonSound1.mp3'),
-      button2Sound: new Audio('/SimonMock/mp3/simonSound1.mp3'),
-      button3Sound: new Audio('/SimonMock/mp3/simonSound1.mp3'),
-      button4Sound: new Audio('/SimonMock/mp3/simonSound1.mp3'),
+      button2Sound: new Audio('/SimonMock/mp3/simonSound2.mp3'),
+      button3Sound: new Audio('/SimonMock/mp3/simonSound3.mp3'),
+      button4Sound: new Audio('/SimonMock/mp3/simonSound4.mp3'),
       errorSound: new Audio('/SimonMock/mp3/error.mp3')
     }
     this.guessCount = 0;
@@ -76,7 +76,7 @@ class Simon extends React.Component {
     let sound = this.sounds[`button${val}Sound`];
     sound.play();
     if(+this.state.order[this.guessCount] !== +val) {
-        this.errorSound.play();
+        this.sounds.errorSound.play();
         this.errorButton.classList.add("error");
         this.guessCount = 0
         this.setState({
@@ -118,8 +118,26 @@ class Simon extends React.Component {
     this.setState({showPopup: this.state.showPopup === true ? false : true})
   }
 
+  resizeWin = () => {
+    this.setState({
+      moreLeft:getComputedStyle(document.getElementsByClassName("title")[0]).left,
+      moreTop:getComputedStyle(document.getElementsByClassName("title")[0]).top
+    })
+  }
+
+  popupListener = (e) => {
+    if(e.target.id !== "moreLink") {
+      this.setState({showPopup:false})
+    }
+  }
+
+
   componentWillUnmount() {
     this.setState({...this.initialState})
+
+    window.removeEventListener("resize", this.resizeWin);
+
+    document.removeEventListener("click", (e) => {this.popupListener(e)})
   }
 
   componentDidMount() {
@@ -131,18 +149,9 @@ class Simon extends React.Component {
       moreTop:getComputedStyle(document.getElementsByClassName("title")[0]).top
     })
 
-    addEventListener("resize", () => {
-      this.setState({
-        moreLeft:getComputedStyle(document.getElementsByClassName("title")[0]).left,
-        moreTop:getComputedStyle(document.getElementsByClassName("title")[0]).top
-      })
-    });
+    window.addEventListener("resize", this.resizeWin);
 
-    addEventListener("click", (e) => {
-      if(e.target.id !== "moreLink") {
-        this.setState({showPopup:false})
-      }
-    })
+    document.addEventListener("click", (e) => {this.popupListener(e)})
 
   }
 
@@ -154,12 +163,12 @@ class Simon extends React.Component {
       <div className="background">
         <div className="simon">
           <div className="top">
-            <a id="button1"  className="button1"   onClick={(e) => this.handleClick(e,'1')}>
+            <a id="button1"  ontouchstart="" className="button button1"   onClick={(e) => this.handleClick(e,'1')}>
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 144.34 147.6">
               <path className="simonButton" d="M49.07,44.32s29.41-30.67,72-41.62c0,0,13.61-4.58,22.32,4.79,0,0,3,2.31,3,10.06L146.11,72s1.14,8.89-14.27,15.38c0,0-32.91,7.85-43.46,46,0,0-4,14.23-24,14.88H16.21s-14.6.41-13-13.38C3.23,134.8,8.91,84.49,49.07,44.32Z" transform="translate(-2.6 -1.08)"/>
             </svg>
             </a>
-             <a id="button2"  className="button2" onClick={(e) => this.handleClick(e,'2')}>
+             <a id="button2"  ontouchstart="" className="button button2" onClick={(e) => this.handleClick(e,'2')}>
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 144.34 147.6">
                 <path className="simonButton" d="M49.07,44.32s29.41-30.67,72-41.62c0,0,13.61-4.58,22.32,4.79,0,0,3,2.31,3,10.06L146.11,72s1.14,8.89-14.27,15.38c0,0-32.91,7.85-43.46,46,0,0-4,14.23-24,14.88H16.21s-14.6.41-13-13.38C3.23,134.8,8.91,84.49,49.07,44.32Z" transform="translate(-2.6 -1.08)"/>
               </svg>
@@ -171,12 +180,12 @@ class Simon extends React.Component {
               <img src="/SimonMock/png/newGameButton.png" />
           </div>
           <div className="bottom">
-            <a id="button4"  className="button4"  onClick={(e) => this.handleClick(e,'4')}>
+            <a id="button4"  ontouchstart="" className="button button4"  onClick={(e) => this.handleClick(e,'4')}>
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 144.34 147.6">
                 <path className="simonButton" d="M49.07,44.32s29.41-30.67,72-41.62c0,0,13.61-4.58,22.32,4.79,0,0,3,2.31,3,10.06L146.11,72s1.14,8.89-14.27,15.38c0,0-32.91,7.85-43.46,46,0,0-4,14.23-24,14.88H16.21s-14.6.41-13-13.38C3.23,134.8,8.91,84.49,49.07,44.32Z" transform="translate(-2.6 -1.08)"/>
               </svg>
             </a>
-            <a id="button3"  className="button3" onClick={(e) => this.handleClick(e,'3')}>
+            <a id="button3"  ontouchstart="" className="button button3" onClick={(e) => this.handleClick(e,'3')}>
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 144.34 147.6">
                 <path className="simonButton" d="M49.07,44.32s29.41-30.67,72-41.62c0,0,13.61-4.58,22.32,4.79,0,0,3,2.31,3,10.06L146.11,72s1.14,8.89-14.27,15.38c0,0-32.91,7.85-43.46,46,0,0-4,14.23-24,14.88H16.21s-14.6.41-13-13.38C3.23,134.8,8.91,84.49,49.07,44.32Z" transform="translate(-2.6 -1.08)"/>
               </svg>
